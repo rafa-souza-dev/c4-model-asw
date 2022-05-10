@@ -1,0 +1,61 @@
+@startuml Django Anúncios - Classes
+
+class Permission {
+    - id: Int 
+    - action()
+    - groupList: ArrayList<Group>
+}
+
+class Group {
+    - id: Int
+    + title: String
+    - userList: ArrayList<User>
+    - permissions: ArrayList<Permission>
+}
+
+class Profile {
+    - id: Int
+    - user: User
+    - full_name: String
+    - cpf: String
+    - phone: String
+}
+
+class User {
+   - id: Int
+   + username: String
+   - email: String
+   - password: String
+   - is_active: Bool
+   - is_staff: Bool
+   - is_superuser: Bool
+   - profile: Profile
+   - groupList: ArrayList<Group>
+   - announcements: ArrayList<Announcement>
+   - last_login: DateTime
+}
+
+class Category {
+    + id: Int
+    + title: String
+    + announcements: ArrayList<Announcement>
+}
+
+class Announcement {
+    + id: Int
+    + title: Float
+    + description: String
+    + price: Double
+    + created_at: DateTime
+    + updated_at: DateTime
+    + user: User
+    + category: Category
+}
+
+Permission "many" -- "many" Group : contains
+User "many" -- "many" Group : contains
+User "1" -- "1" Profile : contains
+User "1" -- "many" Announcement : contains
+Category "1" -- "many" Announcement : contains
+
+@enduml

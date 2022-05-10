@@ -1,0 +1,32 @@
+@startuml Máquina de Estados
+
+[*] --> Anônimo : Acessando
+Anônimo : entry / visualizarAnuncios()
+Anônimo : do / filtrandoCategorias()
+Anônimo : exit / entenderLimitacoes()
+
+Anônimo --> Cadastro
+Cadastro : entry / preencherFormulario()
+Cadastro : do / validarDados()
+Cadastro : exit / registrarUsuario()
+
+Cadastro --> Login
+Login : entry / preencherFormulario()
+Login : do / requisitarAcesso()
+Login : exit / fazerLogin()
+
+Login --> Anunciar
+Login --> Perfil
+
+Anunciar : entry / descreverAnuncio()
+Anunciar : do / validarDados()
+Anunciar : exit / registrarAnuncio()
+
+Perfil : entry / informarDadosPessoais()
+Perfil : do / validarDocumento()
+Perfil : exit / perfilCompleto()
+
+Anunciar --> [*]
+Perfil --> [*]
+
+@enduml

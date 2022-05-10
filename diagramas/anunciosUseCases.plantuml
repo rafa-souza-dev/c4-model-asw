@@ -1,0 +1,56 @@
+@startuml
+
+actor UsuárioAnunciador as user
+actor UsuárioAnônimo as userAnonymous
+actor UsuárioAdmin as userAdmin
+
+component DjangoAnúncios {
+    (Criar Conta)
+    (Criar Perfil)
+    (Editar Perfil)
+    (Fazer Login)
+    (Validar Formulário)
+    (Disparar Erro de Formulário)
+    (Visualizar Anúncios)
+    (Cadastrar Anúncios)
+    (Editar Anúncios)
+    (Excluir Anúncios)
+    (Filtrar Categoria)
+    (Criar Categoria)
+    (Criar Permissão)
+    (Dar Permissões aos Usuários)
+    (Selecionar Um Anúncio para Ver Detalhes)
+}
+
+userAnonymous --- (Criar Conta)
+user --- (Fazer Login)
+userAdmin --- (Fazer Login)
+
+userAnonymous --- (Visualizar Anúncios)
+user --- (Visualizar Anúncios)
+userAdmin --- (Visualizar Anúncios)
+
+userAdmin --- (Cadastrar Anúncios)
+user --- (Cadastrar Anúncios)
+
+userAdmin -- (Editar Anúncios)
+userAdmin -- (Excluir Anúncios)
+userAdmin -- (Criar Categoria)
+userAdmin -- (Criar Permissão)
+userAdmin -- (Dar Permissões aos Usuários)
+
+(Criar Conta) --> (Validar Formulário) #black;line.dashed; : includes 
+(Criar Conta) --> (Criar Perfil) #black;line.dashed; : includes 
+(Fazer Login) --> (Validar Formulário) #black;line.dashed; : includes 
+
+(Fazer Login) <--- (Disparar Erro de Formulário) #black;line.dashed; : extends 
+(Fazer Login) <--- (Editar Perfil) #black;line.dashed; : extends 
+(Criar Conta) <--- (Disparar Erro de Formulário) #black;line.dashed; : extends 
+
+(Visualizar Anúncios) <---- (Filtrar Categoria) #black;line.dashed; : extends 
+
+(Visualizar Anúncios) <---- (Selecionar Um Anúncio para Ver Detalhes) #black;line.dashed; : extends 
+
+(Selecionar Um Anúncio para Ver Detalhes) <-- (Editar Anúncios) #black;line.dashed; : includes 
+(Selecionar Um Anúncio para Ver Detalhes) <-- (Excluir Anúncios) #black;line.dashed; : includes 
+@enduml

@@ -1,0 +1,61 @@
+@startuml C3
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+!include <office/Servers/database_server>
+!include <office/Servers/file_server>
+!include <office/Servers/application_server>
+!include <office/Concepts/service_application>
+!include <office/Concepts/firewall>
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/html5.puml
+!include DEVICONS/django.puml
+!include DEVICONS/postgresql.puml
+!include DEVICONS/heroku.puml
+!include DEVICONS/chrome.puml
+!include DEVICONS/code.puml
+!include FONTAWESOME/users.puml
+
+System_Boundary(c1, "Sample System") {
+    Container(categoria, "Categoria", "", "É identificada por um título e pode ser usada para filtrar os anúncios")
+    Container(anuncio, "Anúncio", "", "Possui título, descrição, preço, datas de criação e edição, usuário que o criou e também uma categoria")
+    Container(regra, "Regras de Negócio", "", "Não precisa estar logado para visualizar os anúncios do site, porém somente usuários autenticados tem o poder de cadastrar novos anúncios. A exclusão e edição dos mesmos podem ser realizadas pelos administradores.")
+    Container(permissao, "Permissões", "", "A própria view manipula quais grupos de usuário conseguem ter acesso a determinada página.")
+
+    Container(endereco, "Endereço", "", "Recurso da rede para que encontre-se o site, é passado pelo domínio do herokuapp.com")
+
+    Container(entidade, "Entidade", "", "Neste campo é espeficicado por qual entidade ou entidades do banco de dados a view deve agir.")
+    Container(acao, "Ação", "", "É escolhida uma das ações dentro do escopo do CRUD e essa ação irá agir sobre a entidade especificada.")
+    Container(tela, "Tela", "", "Arquivo HTML o qual irá prover um formulário adequado para a ação.")
+    
+    Container(estilos, "Estilos", "", "Arquivos estáticos do tipo CSS3, os quais irão definir o tamanho, cor, responsividade dos componentes e entre outros.")
+    Container(componentes, "Componentes", "", "Ao fazer a importação do pacote Fomantic, vários componentes são disponibilizados para uso, como ícones, cards e botões")
+    Container(variaveis, "Variáveis", "", "Dentro da view se cria uma variável com base no modelo escolhido, essa variável fica disponível para ser usada dentro dos componentes da tela.")
+    Container(blocos, "Blocos", "", "Como forma de organizar a estrutura do projeto, seus templates possuem sempre blocos, os quais irão salvar por padrão menu lateral, header da página e algumas pré-definições. Isso ajuda a não ter que fazer a mesma manutenção em vários locais diferentes caso necessário.")
+
+}
+
+ContainerDb(model, "Modelo", "PostgreSQL", $tags="db", $sprite="postgresql")
+Container(view, "View", "Ligação entre modelo e template", $sprite="code")
+Container(template, "Template", "HTML5, CSS3, Fomantic-UI", $sprite="html5")
+Container(url, "URL", "Http protocol", $sprite="chrome")
+
+Rel(categoria, anuncio, "")
+Rel(anuncio, regra, "")
+Rel(regra, model, "")
+
+Rel(endereco, url, "")
+
+Rel(permissao, entidade, "")
+Rel(entidade, acao, "")
+Rel(acao, tela, "")
+Rel(tela, view, "")
+
+Rel(estilos, componentes, "")
+Rel(componentes, variaveis, "")
+Rel(variaveis, blocos, "")
+Rel(blocos, template, "")
+
+@enduml

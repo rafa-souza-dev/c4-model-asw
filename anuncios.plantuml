@@ -1,0 +1,26 @@
+@startuml C1
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/html5.puml
+!include DEVICONS/django.puml
+!include DEVICONS/postgresql.puml
+!include DEVICONS/heroku.puml
+!include FONTAWESOME/users.puml
+
+Person(user, "Usuário", "Pessoas que querem cadastrar/ver anúncios", $sprite="users")
+
+Container(interface, "Interface", "fomantic-ui", "Framework usado para construir a interface de comunicação com o usuário", $sprite="html5")
+Container(sistema, "Sistema", "django", "Regras de negócio e permissões", $sprite="django")
+ContainerDb(postgresql, "Database", "Microsoft SQL", "Contem os produtos cadastrados", $sprite="postgresql")
+Container(hospedagem, "Heroku", "herokuapp", "É onde está hospedado o site e também seu banco de dados", $sprite="heroku")
+
+Rel(user, interface, "Usa")
+Rel(interface, sistema, "Usa")
+Rel(hospedagem, interface, "Hospeda")
+Rel(hospedagem, postgresql, "Hospeda")
+Rel(hospedagem, sistema, "Hospeda")
+Rel_R(sistema, postgresql, "Cadastra/Vê")
+
+@enduml

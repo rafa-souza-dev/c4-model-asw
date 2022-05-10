@@ -1,0 +1,16 @@
+@startuml Diagrama de Sequência Model View Template
+actor       Usuário     as Foo1
+boundary    Interface    as Foo2
+Foo1 -> Foo2 : requisitarUrl()
+Foo2 -> Urls : verificarPadraoUrl()
+Urls -> Views : acessarViewCorrespondente()
+database    Database    as Foo5
+Views -> Foo5 : coletarDadosNecessarios()
+Views -> Templates : renderizarHtml()
+
+Views <-- Templates : pagina HTML
+Views <-- Foo5 : lista ou dado único
+Urls <-- Views : inicia a conexão com a view
+Foo2 <-- Urls : verifica se a url existe no sistema
+Foo1 <-- Foo2 : anúncios e seus dados
+@enduml

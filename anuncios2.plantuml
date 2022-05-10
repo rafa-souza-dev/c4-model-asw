@@ -1,0 +1,55 @@
+@startuml C2
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define osaPuml https://raw.githubusercontent.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons/master
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include <office/Servers/database_server>
+!include <office/Servers/file_server>
+!include <office/Servers/application_server>
+!include <office/Concepts/service_application>
+!include <office/Concepts/firewall>
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/html5.puml
+!include DEVICONS/django.puml
+!include DEVICONS/postgresql.puml
+!include DEVICONS/heroku.puml
+!include DEVICONS/chrome.puml
+!include DEVICONS/code.puml
+!include FONTAWESOME/users.puml
+
+AddExternalPersonTag("anonymous_ext", $sprite="osa_user_black_hat", $legendText="anonymous user")
+AddPersonTag("customer", $sprite="osa_user_large_group", $legendText="aggregated user")
+AddPersonTag("admin", $sprite="osa_user_audit,color=red", $legendSprite="osa_user_audit,scale=0.25,color=red", $legendText="administration user")
+
+AddContainerTag("webApp", $sprite="application_server", $legendText="web app container")
+AddContainerTag("db", $sprite="database_server", $legendText="database container")
+AddContainerTag("files", $sprite="file_server", $legendText="file server container")
+AddContainerTag("conApp", $sprite="service_application", $legendText="console app container")
+
+AddRelTag("firewall", $textColor="$ARROW_COLOR", $lineColor="$ARROW_COLOR", $sprite="firewall,scale=0.3,color=red", $legendText="firewall")
+
+Person(user, "Usuário", "Pessoas que querem cadastrar/ver anúncios", $sprite="users")
+
+System_Boundary(c1, "Django Anúncios MVT"){
+    Container(web_app, "Web Application", "Django, Fomantic-UI, Herokuapp", $tags="webApp")
+    ContainerDb(rel_db, "Modelo", "PostgreSQL", $tags="db")
+    Container(url, "URL", "Http protocol", $sprite="chrome")
+    Container(template, "Template", "HTML5, CSS3, Fomantic-UI", $sprite="html5")
+    Container(view, "View", "Ligação entre modelo e template", $sprite="code")
+}
+
+Rel(user, web_app, "Uses", "HTTPS", $tags="firewall")
+
+Rel(web_app, url, "Reads from")
+
+Rel_U(view, rel_db, "Reads from and writes data to")
+Rel_U(url, view, "Writes to")
+Rel_U(view, template, "Reads from and writes to")
+
+Lay_R(rel_db, url)
+
+SHOW_LEGEND()
+@enduml
